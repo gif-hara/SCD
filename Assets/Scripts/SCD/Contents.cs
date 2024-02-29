@@ -7,6 +7,46 @@ namespace SCD
     /// </summary>
     public class Contents
     {
+        private readonly Dictionary<string, Record> records = new();
+
+        private readonly HashSet<string> consumed = new();
+
+        /// <summary>
+        /// コンテンツの一覧
+        /// </summary>
+        public IReadOnlyDictionary<string, Record> Records => records;
+
+        /// <summary>
+        /// 消費済みのコンテンツ
+        /// </summary>
+        public IReadOnlyCollection<string> Consumed => consumed;
+
+        public Contents(IEnumerable<Record> records)
+        {
+            foreach (var record in records)
+            {
+                this.records.Add(record.Name, record);
+            }
+        }
+
+        public void Consume(Record record)
+        {
+            consumed.Add(record.Name);
+        }
+
+        public IReadOnlyList<Record> GetAvailable(Stats stats)
+        {
+            var list = new List<Record>();
+            foreach (var record in records.Values)
+            {
+                if (!consumed.Contains(record.Name) && record.IsAvailable(stats))
+                {
+                    list.Add(record);
+                }
+            }
+            return list;
+        }
+
         public class Record
         {
             /// <summary>
