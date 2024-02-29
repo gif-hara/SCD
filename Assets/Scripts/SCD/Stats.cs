@@ -20,13 +20,15 @@ namespace SCD
         /// </summary>
         public void Set(string name, int value)
         {
-            if (records.TryGetValue(name, out var record))
+            Record record;
+            if (records.TryGetValue(name, out record))
             {
                 record.Value = value;
             }
             else
             {
-                records.Add(name, new Record(name, value));
+                record = new Record(name, value);
+                records.Add(name, record);
             }
             OnChanged?.Invoke(record);
         }
@@ -36,13 +38,15 @@ namespace SCD
         /// </summary>
         public void Add(string name, int value)
         {
-            if (records.TryGetValue(name, out var record))
+            Record record;
+            if (records.TryGetValue(name, out record))
             {
                 record.Value += value;
             }
             else
             {
-                records.Add(name, new Record(name, value));
+                record = new Record(name, value);
+                records.Add(name, record);
             }
             OnChanged?.Invoke(record);
         }
