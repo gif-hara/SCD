@@ -17,9 +17,9 @@ namespace SCD
         public IReadOnlyDictionary<string, Record> Records => records;
 
         /// <summary>
-        /// 消費済みのコンテンツ
+        /// 完了済みのコンテンツ
         /// </summary>
-        public IReadOnlyCollection<string> Consumed => completed;
+        public IReadOnlyCollection<string> Completed => completed;
 
         public Contents(IEnumerable<Record> records)
         {
