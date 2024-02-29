@@ -14,36 +14,36 @@ namespace SCD.Sample
             {
                 new Contents.Record(
                     "Quest1",
-                    new List<Stats.Record>(),      // 条件が無いクエストも作れる
-                    new List<Stats.Record>         // 完了条件は木材というアイテムを5個集めること
+                    new List<Stats.Record>(),       // 条件が無いクエストも作れる
+                    new List<Stats.Record>
                     {
-                        new("Item.Wood", 5),
+                        new("Item.Wood", 5),        // 完了条件は木材というアイテムを5個集めること
                     },
                     new List<Stats.Record>
                     {
-                        new("Quest.1.Cleared", 1),
-                        new("Unlock.Item.Ore", 1),
+                        new("Quest.1.Cleared", 1),  // クエスト1がクリアされたことを示す統計データを設定
+                        new("Unlock.Item.Ore", 1),  // 鉱石を採掘できるようにするための統計データを設定
                     }),
                 new Contents.Record(
                     "Quest2",
                     new List<Stats.Record>
                     {
-                        new("Quest.1.Cleared", 1),
+                        new("Quest.1.Cleared", 1),  // Quest1がクリアされていることがクエスト2の開始条件
                     },
                     new List<Stats.Record>
                     {
-                        new("Item.Ore", 8),
+                        new("Item.Ore", 8),         // 完了条件は鉱石というアイテムを8個集めること
                     },
                     new List<Stats.Record>
                     {
-                        new("Quest.2.Cleared", 1),
+                        new("Quest.2.Cleared", 1),  // クエスト2がクリアされたことを示す統計データを設定
                     }),
             }
         );
 
         private List<Contents.Record> availableQuests;
 
-        private List<Contents.Record> completedQuests = new();
+        private readonly List<Contents.Record> completedQuests = new();
 
         private void Start()
         {
@@ -68,6 +68,8 @@ namespace SCD.Sample
                     Debug.Log("あなたはまだ鉱石を採掘することができません");
                 }
             }
+
+            // スペースキーを押すとクエストを完了する
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Completed Quests Count: " + completedQuests.Count);
@@ -89,11 +91,7 @@ namespace SCD.Sample
         {
             Debug.Log($"Stats Changed: {record.Name} = {record.Value}");
 
-            if (availableQuests == null)
-            {
-                return;
-            }
-
+            // クエストの進行状況をチェック
             foreach (var quest in availableQuests)
             {
                 if (quest.IsCompleted(stats))
@@ -101,6 +99,7 @@ namespace SCD.Sample
                     completedQuests.Add(quest);
                 }
             }
+            // 完了済みのクエストを除外
             availableQuests.RemoveAll(x => x.IsCompleted(stats));
         }
     }
