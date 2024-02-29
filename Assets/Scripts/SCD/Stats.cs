@@ -59,6 +59,14 @@ namespace SCD
             return records.TryGetValue(name, out var record) ? record.Value : 0;
         }
 
+        /// <summary>
+        /// 統計データが存在するかどうかを取得する
+        /// </summary>
+        public bool Contains(string name)
+        {
+            return records.ContainsKey(name);
+        }
+
         public class Record
         {
             public string Name { get; }
