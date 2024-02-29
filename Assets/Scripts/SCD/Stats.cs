@@ -20,8 +20,7 @@ namespace SCD
         /// </summary>
         public void Set(string name, int value)
         {
-            Record record;
-            if (records.TryGetValue(name, out record))
+            if (records.TryGetValue(name, out var record))
             {
                 record.Value = value;
             }
@@ -38,8 +37,7 @@ namespace SCD
         /// </summary>
         public void Add(string name, int value)
         {
-            Record record;
-            if (records.TryGetValue(name, out record))
+            if (records.TryGetValue(name, out var record))
             {
                 record.Value += value;
             }
@@ -69,8 +67,14 @@ namespace SCD
 
         public class Record
         {
+            /// <summary>
+            /// 名前
+            /// </summary>
             public string Name { get; }
 
+            /// <summary>
+            /// 値
+            /// </summary>
             public int Value { get; set; }
 
             public Record(string name, int value)
