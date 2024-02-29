@@ -1,13 +1,19 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace SCD
 {
     /// <summary>
     /// ゲームを構成するコンテンツ
     /// </summary>
+    [Serializable]
     public class Contents
     {
-        private readonly Dictionary<string, Record> records = new();
+        [SerializeField]
+        private List<Record> serializedRecords;
+
+        private Dictionary<string, Record> records = null;
 
         private readonly HashSet<string> completed = new();
 
@@ -42,6 +48,7 @@ namespace SCD
         /// </summary>
         public IReadOnlyList<Record> GetAvailable(Stats stats)
         {
+            InitializeIfNeed();
             var list = new List<Record>();
             foreach (var record in records.Values)
             {
@@ -53,27 +60,44 @@ namespace SCD
             return list;
         }
 
+        private void InitializeIfNeed()
+        {
+            if (records == null)
+            {
+                records = new Dictionary<string, Record>();
+                foreach (var record in serializedRecords)
+                {
+                    records.Add(record.Name, record);
+                }
+            }
+        }
+
+        [Serializable]
         public class Record
         {
             /// <summary>
             /// このコンテンツの名前
             /// </summary>
-            public string Name { get; }
+            [field: SerializeField]
+            public string Name { get; private set; }
 
             /// <summary>
             /// 開始するために必要な統計データ
             /// </summary>
-            public List<Stats.Record> Required { get; }
+            [field: SerializeField]
+            public List<Stats.Record> Required { get; private set; }
 
             /// <summary>
             /// 完了するために必要な統計データ
             /// </summary>
-            public List<Stats.Record> Conditions { get; }
+            [field: SerializeField]
+            public List<Stats.Record> Conditions { get; private set; }
 
             /// <summary>
             /// 完了した際の報酬となる統計データ
             /// </summary>
-            public List<Stats.Record> Rewards { get; }
+            [field: SerializeField]
+            public List<Stats.Record> Rewards { get; private set; }
 
             public Record(string name, List<Stats.Record> required, List<Stats.Record> conditions, List<Stats.Record> rewards)
             {

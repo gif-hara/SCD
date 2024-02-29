@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace SCD
 {
@@ -65,16 +66,19 @@ namespace SCD
             return records.ContainsKey(name);
         }
 
+        [Serializable]
         public class Record
         {
             /// <summary>
             /// 名前
             /// </summary>
-            public string Name { get; }
+            [field: SerializeField]
+            public string Name { get; private set; }
 
             /// <summary>
             /// 値
             /// </summary>
+            [field: SerializeField]
             public int Value { get; set; }
 
             public Record(string name, int value)
