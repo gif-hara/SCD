@@ -29,11 +29,17 @@ namespace SCD
             }
         }
 
+        /// <summary>
+        /// コンテンツを完了する
+        /// </summary>
         public void Complete(Record record)
         {
             completed.Add(record.Name);
         }
 
+        /// <summary>
+        /// 利用可能なコンテンツを取得する
+        /// </summary>
         public IReadOnlyList<Record> GetAvailable(Stats stats)
         {
             var list = new List<Record>();
