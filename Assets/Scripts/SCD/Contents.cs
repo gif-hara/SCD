@@ -110,7 +110,7 @@ namespace SCD
             /// <summary>
             /// 報酬を適用する
             /// </summary>
-            public void Apply(Stats stats)
+            public void ApplyRewards(Stats stats)
             {
                 foreach (var record in Rewards)
                 {
