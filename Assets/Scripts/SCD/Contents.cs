@@ -9,7 +9,7 @@ namespace SCD
     {
         private readonly Dictionary<string, Record> records = new();
 
-        private readonly HashSet<string> consumed = new();
+        private readonly HashSet<string> completed = new();
 
         /// <summary>
         /// コンテンツの一覧
@@ -19,7 +19,7 @@ namespace SCD
         /// <summary>
         /// 消費済みのコンテンツ
         /// </summary>
-        public IReadOnlyCollection<string> Consumed => consumed;
+        public IReadOnlyCollection<string> Consumed => completed;
 
         public Contents(IEnumerable<Record> records)
         {
@@ -29,9 +29,9 @@ namespace SCD
             }
         }
 
-        public void Consume(Record record)
+        public void Complete(Record record)
         {
-            consumed.Add(record.Name);
+            completed.Add(record.Name);
         }
 
         public IReadOnlyList<Record> GetAvailable(Stats stats)
@@ -39,7 +39,7 @@ namespace SCD
             var list = new List<Record>();
             foreach (var record in records.Values)
             {
-                if (!consumed.Contains(record.Name) && record.IsAvailable(stats))
+                if (!completed.Contains(record.Name) && record.IsAvailable(stats))
                 {
                     list.Add(record);
                 }
