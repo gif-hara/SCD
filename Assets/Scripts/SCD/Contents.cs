@@ -10,6 +10,11 @@ namespace SCD
         public class Record
         {
             /// <summary>
+            /// このコンテンツの名前
+            /// </summary>
+            public string Name { get; }
+
+            /// <summary>
             /// このコンテンツを開始するために必要な統計データ
             /// </summary>
             public List<Stats.Record> Required { get; }
@@ -24,8 +29,9 @@ namespace SCD
             /// </summary>
             public List<Stats.Record> Rewards { get; }
 
-            public Record(List<Stats.Record> required, List<Stats.Record> conditions, List<Stats.Record> rewards)
+            public Record(string name, List<Stats.Record> required, List<Stats.Record> conditions, List<Stats.Record> rewards)
             {
+                Name = name;
                 Required = required;
                 Conditions = conditions;
                 Rewards = rewards;
@@ -38,7 +44,7 @@ namespace SCD
             {
                 foreach (var record in Required)
                 {
-                    if (stats.Get(record.name) < record.value)
+                    if (stats.Get(record.Name) < record.Value)
                     {
                         return false;
                     }
@@ -53,7 +59,7 @@ namespace SCD
             {
                 foreach (var record in Conditions)
                 {
-                    if (stats.Get(record.name) < record.value)
+                    if (stats.Get(record.Name) < record.Value)
                     {
                         return false;
                     }
@@ -68,7 +74,7 @@ namespace SCD
             {
                 foreach (var record in Rewards)
                 {
-                    stats.Add(record.name, record.value);
+                    stats.Add(record.Name, record.Value);
                 }
             }
         }
