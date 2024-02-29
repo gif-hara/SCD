@@ -55,17 +55,17 @@ namespace SCD
             public string Name { get; }
 
             /// <summary>
-            /// このコンテンツを開始するために必要な統計データ
+            /// 開始するために必要な統計データ
             /// </summary>
             public List<Stats.Record> Required { get; }
 
             /// <summary>
-            /// このコンテンツを完了するために必要な統計データ
+            /// 完了するために必要な統計データ
             /// </summary>
             public List<Stats.Record> Conditions { get; }
 
             /// <summary>
-            /// このコンテンツを完了した際の報酬となる統計データ
+            /// 完了した際の報酬となる統計データ
             /// </summary>
             public List<Stats.Record> Rewards { get; }
 
@@ -78,7 +78,7 @@ namespace SCD
             }
 
             /// <summary>
-            /// このコンテンツを利用可能かどうかを判定する
+            /// 利用可能かどうかを判定する
             /// </summary>
             public bool IsAvailable(Stats stats)
             {
@@ -93,7 +93,7 @@ namespace SCD
             }
 
             /// <summary>
-            /// このコンテンツを完了したかどうかを判定する
+            /// 完了したかどうかを判定する
             /// </summary>
             public bool IsCompleted(Stats stats)
             {
