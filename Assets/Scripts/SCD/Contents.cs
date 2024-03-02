@@ -22,11 +22,8 @@ namespace SCD
 
         public Contents(IEnumerable<Record> records)
         {
-            this.records = new Dictionary<string, Record>();
-            foreach (var record in records)
-            {
-                this.records.Add(record.Name, record);
-            }
+            serializedRecords = new List<Record>(records);
+            InitializeIfNeed();
         }
 
         /// <summary>
