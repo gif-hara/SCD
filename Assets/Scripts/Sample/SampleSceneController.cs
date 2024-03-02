@@ -7,6 +7,12 @@ namespace SCD.Sample
 {
     public class SampleSceneController : MonoBehaviour
     {
+        [SerializeField]
+        private Contents testContents;
+
+        [SerializeField]
+        private List<Contents.Record> test;
+
         private readonly Stats stats = new();
 
         private readonly Contents quests = new(
@@ -15,6 +21,10 @@ namespace SCD.Sample
                 new Contents.Record(
                     "Quest1",
                     new List<Stats.Record>(),       // 条件が無いクエストも作れる
+                    new List<Stats.Record>()
+                    {
+                        new("Quest.1.Cleared", 1),  // すでにクエスト1がクリアされている場合は無視される
+                    },
                     new List<Stats.Record>
                     {
                         new("Item.Wood", 5),        // 完了条件は木材というアイテムを5個集めること
@@ -29,6 +39,10 @@ namespace SCD.Sample
                     new List<Stats.Record>
                     {
                         new("Quest.1.Cleared", 1),  // Quest1がクリアされていることがクエスト2の開始条件
+                    },
+                    new List<Stats.Record>()
+                    {
+                        new("Quest.2.Cleared", 1),  // すでにクエスト2がクリアされている場合は無視される
                     },
                     new List<Stats.Record>
                     {
@@ -80,7 +94,6 @@ namespace SCD.Sample
                     foreach (var quest in temp)
                     {
                         quest.ApplyRewards(stats);
-                        quests.Complete(quest);
                     }
                     availableQuests = quests.GetAvailable(stats).ToList();
                 }
