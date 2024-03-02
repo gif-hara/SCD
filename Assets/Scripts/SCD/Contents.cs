@@ -15,32 +15,18 @@ namespace SCD
 
         private Dictionary<string, Record> records = null;
 
-        private readonly HashSet<string> completed = new();
-
         /// <summary>
         /// コンテンツの一覧
         /// </summary>
         public IReadOnlyDictionary<string, Record> Records => records;
 
-        /// <summary>
-        /// 完了済みのコンテンツ
-        /// </summary>
-        public IReadOnlyCollection<string> Completed => completed;
-
         public Contents(IEnumerable<Record> records)
         {
+            this.records = new Dictionary<string, Record>();
             foreach (var record in records)
             {
                 this.records.Add(record.Name, record);
             }
-        }
-
-        /// <summary>
-        /// コンテンツを完了する
-        /// </summary>
-        public void Complete(Record record)
-        {
-            completed.Add(record.Name);
         }
 
         /// <summary>
@@ -52,7 +38,7 @@ namespace SCD
             var list = new List<Record>();
             foreach (var record in records.Values)
             {
-                if (!completed.Contains(record.Name) && record.IsAvailable(stats))
+                if (record.IsAvailable(stats) && !record.BeIgnored(stats))
                 {
                     list.Add(record);
                 }
@@ -88,6 +74,15 @@ namespace SCD
             public List<Stats.Record> Required { get; private set; }
 
             /// <summary>
+            /// このコンテンツが無視される統計データ
+            /// </summary>
+            /// <remarks>
+            /// このリストにヒットした場合は有効なコンテンツではないと判定されます
+            /// </remarks>
+            [field: SerializeField]
+            public List<Stats.Record> Ignore { get; private set; }
+
+            /// <summary>
             /// 完了するために必要な統計データ
             /// </summary>
             [field: SerializeField]
@@ -99,10 +94,17 @@ namespace SCD
             [field: SerializeField]
             public List<Stats.Record> Rewards { get; private set; }
 
-            public Record(string name, List<Stats.Record> required, List<Stats.Record> conditions, List<Stats.Record> rewards)
+            public Record(
+                string name,
+                List<Stats.Record> required,
+                List<Stats.Record> ignore,
+                List<Stats.Record> conditions,
+                List<Stats.Record> rewards
+                )
             {
                 Name = name;
                 Required = required;
+                Ignore = ignore;
                 Conditions = conditions;
                 Rewards = rewards;
             }
@@ -120,6 +122,21 @@ namespace SCD
                     }
                 }
                 return true;
+            }
+
+            /// <summary>
+            /// 無視されるかどうかを判定する
+            /// </summary>
+            public bool BeIgnored(Stats stats)
+            {
+                foreach (var record in Ignore)
+                {
+                    if (stats.Get(record.Name) >= record.Value)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             /// <summary>
