@@ -241,6 +241,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 285d58a6ae89d4ccf8c733e9f25e5ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testContents:
+    serializedRecords: []
+  test: []
 --- !u!4 &840609990
 Transform:
   m_ObjectHideFlags: 0
